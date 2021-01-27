@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+    Share a post
+{% endblock %}
+
+{% block content %}
+    {% if sent %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <div 
+                        {% if message.tags %} role="alert" class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                        {% endif %}>{{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
+    <h2>
+        Share <a href="{{ post.get_absolute_url }}">{{ post.title }}</a> by email
+    </h2>
+    <hr>
+    <div class="container">
+        <a href="{% url 'blog:post_list' %}" class="btn btn-outline-info">Cancel</a>
+    </div>
+    <div class="container">
+        <form method="POST">
+            <div class="form-group">
+                {{form.as_p}}
+                {% csrf_token %}
+                <input type="submit" class="btn btn-info" value="Send e-mail">    
+            </div>
+        </form>
+    </div>
+{% endblock %}

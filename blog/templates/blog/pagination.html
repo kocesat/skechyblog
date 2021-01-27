@@ -1,0 +1,35 @@
+<!-- Pagination -->
+<div class="row justify-content-between">
+    <div class="col-8">
+    </div>
+    <div class="col-4">
+        <div class="row">
+            <div class="mr-1">
+                {% if page.has_previous %}
+                    <a class="btn btn-outline-secondary" href="?page_number={{page.previous_page_number}}">&laquo;</a>        
+                {% endif %}
+            </div>
+            <div class="btn-group mr-1">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{page.number}}
+                </button>
+                <div class="dropdown-menu">
+                        {% for n in range %}
+                            <a class="dropdown-item" href="?page_number={{n}}">{{n}}</a>
+                        {% endfor %}
+                </div> 
+            </div>
+            <div class="mr-1">
+            <a class="btn btn-light disabled" href="#"><strong>/</strong></a>          
+            </div>
+            <div class="mr-1">
+            <a class="btn btn-outline-secondary" href="?page_number={{page.paginator.num_pages}}">{{page.paginator.num_pages}}</a>
+            </div>
+            <div mr-1>
+            {% if page.has_next %}
+                <a class="btn btn-outline-secondary" href="?page_number={{page.next_page_number}}">&raquo;</a>
+            {% endif %}
+            </div>
+        </div>        
+    </div>
+  </div>
