@@ -1,8 +1,25 @@
 {% extends 'blog/base.html' %}
 
+
 {% block title %} {{ post.title }} {% endblock %}
 
+
 {% block content %}
+    
+    {% if new_comment %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div 
+                    {% if message.tags %} role="alert" class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                    {% endif %}>{{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <h1>{{ post.title }}</h1>
     <p class="date">
         Published {{post.publish}} by {{post.author}}
@@ -10,4 +27,32 @@
     {{post.body|linebreaks}}
     <a href="{% url 'blog:post_list' %}" class="btn btn-outline-info">&larr; Back</a>
     <a href="{% url 'blog:post_share' post.id %}" class="btn btn-info">Share</a>
+
+    {% with comments.count as total_comments %}
+    <h4>
+        {{ total_comments }} comment{{total_comments|pluralize}}
+    </h4>
+    {% endwith %}
+
+    {% for comment in comments %}
+        <div class="comment">
+            <p class="info">
+                Comment {{ forloop.counter }} by {{ comment.name }}
+            </p>
+            {{ comment.body|linebreaks }}
+        </div>
+    {% empty %}
+        <p>
+            There are no comments yet.
+        </p>
+    {% endfor %}
+
+    <h2>Add a new comment</h2>
+    <form action="" method="post">
+        {{ comment_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Add comment"></p>
+    </form>
+
+
 {% endblock %}

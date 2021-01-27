@@ -16,6 +16,13 @@
             Published {{ post.publish }} by {{ post.author }}
         </p>
         {{ post.body|truncatewords:30|linebreaks }}
+
+        {% with post.comments.count as total_comments %}
+            <p class="text-muted">
+                <a href="{{ post.get_absolute_url }}">{{total_comments}} comment{{total_comments|pluralize}}</a>
+            </p>
+        {% endwith %}
+        
         <a href="{% url 'blog:post_share' post.id %}" class="btn btn-info">Share</a>
     {% endfor %}
 
