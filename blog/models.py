@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
+from taggit.managers import TaggableManager
 
 
 class PublishedManager(models.Manager):
@@ -24,7 +25,8 @@ class Post(models.Model):
     status = models.CharField(max_length=10,
                             choices=STATUS_CHOICES,
                             default='draft')
-    
+    tags = TaggableManager()
+
     class Meta:
         ordering = ('-publish', ) # append ',' to tell Python it's a tuple.
 
@@ -40,6 +42,8 @@ class Post(models.Model):
 
     objects = models.Manager()
     published = PublishedManager()
+
+
 
 
 class Comment(models.Model):
