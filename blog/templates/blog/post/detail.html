@@ -5,21 +5,6 @@
 
 
 {% block content %}
-    
-    {% if new_comment %}
-        <ul class="messages">
-            {% for message in messages %}
-                <div 
-                    {% if message.tags %} role="alert" class="alert alert-{{ message.tags }} alert-dismissible fade show"
-                    {% endif %}>{{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
     <h1>{{ post.title }}</h1>
     <p class="date">
         Published {{post.publish}} by {{post.author}}

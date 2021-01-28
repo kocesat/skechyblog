@@ -5,21 +5,6 @@
 {% endblock %}
 
 {% block content %}
-    {% if sent %}
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <div 
-                        {% if message.tags %} role="alert" class="alert alert-{{ message.tags }} alert-dismissible fade show"
-                        {% endif %}>{{ message }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endif %}
     <h2>
         Share <a href="{{ post.get_absolute_url }}">{{ post.title }}</a> by email
     </h2>
