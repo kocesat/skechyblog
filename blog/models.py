@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
 from taggit.managers import TaggableManager
+from django.db.models import Count
 
 
 class PublishedManager(models.Manager):
@@ -42,6 +43,15 @@ class Post(models.Model):
 
     objects = models.Manager()
     published = PublishedManager()
+
+    def get_similar_posts(self):
+        '''
+        Given a post object, it returns queryset of 4 posts that have same tags
+        '''
+        post_tags_ids = self.tags.values_list('id', flat=True) # flat=True makes returning object a list of one values not [( x,y )]
+        similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=self.id)
+        similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
+        return similar_posts
 
 
 

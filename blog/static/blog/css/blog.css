@@ -54,6 +54,7 @@ label {
     color:#333;
     margin-bottom:4px; 
 }
+
 input, textarea { 
     clear:both;
     float:left;
@@ -63,14 +64,7 @@ input, textarea {
     padding:6px 10px;
     font-size:12px;
 }
-input[type=submit] {
-    font-weight:bold;
-    background:#00abff;
-    color:#fff;
-    padding:10px 20px;
-    font-size:14px;
-    text-transform:uppercase; 
-}
+
 .errorlist { 
     color:#cc0033;
     float:left;

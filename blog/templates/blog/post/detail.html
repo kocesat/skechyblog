@@ -1,5 +1,5 @@
 {% extends 'blog/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %} {{ post.title }} {% endblock %}
 
 {% block content %}
@@ -9,8 +9,15 @@
         Published {{post.publish}} by {{post.author}}
     </p>
     {{post.body|linebreaks}}
-    <a href="{% url 'blog:post_list' %}" class="btn btn-outline-info">&larr; Back</a>
-    <a href="{% url 'blog:post_share' post.id %}" class="btn btn-info">Share</a>
+    <a href="{% url 'blog:post_list' %}" class="btn btn-outline-info"><i class="fas fa-arrow-left"></i></a>
+    <a href="{% url 'blog:post_share' post.id %}" class="btn btn-outline-info"><i class="fas fa-share-alt"></i></a>
+    <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#exampleModal">
+        <i class="fas fa-comments"></i>
+    </button>
+    <!-- TODO Add Like Property to the blog posts -->
+    <a href="#" class="btn btn-outline-info"><i class="fas fa-heart"></i></a>
+
+    <hr>
 
     {% with comments.count as total_comments %}
     <h4>
@@ -20,24 +27,51 @@
 
     {% for comment in comments %}
         <div class="comment">
-            <p class="info">
+            <p class="text-info">
                 Comment {{ forloop.counter }} by {{ comment.name }}
             </p>
-            {{ comment.body|linebreaks }}
+            <p class="text-info">
+                {{ comment.body|linebreaks }}
+            </p>
         </div>
     {% empty %}
-        <p>
+        <p class="text-info">
             There are no comments yet.
         </p>
     {% endfor %}
 
-    <h2>Add a new comment</h2>
-    <!-- TODO: Add Comment form can be in a modal -->
-    <form action="" method="post">
-        {{ comment_form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Add comment"></p>
-    </form>
+    <!-- Button trigger modal -->
+    <hr>
+
+  
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add a new comment</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    {{ comment_form|crispy }}
+                    {% csrf_token %}
+                    <a class="btn btn-outline-info" href="{{ post.get_absolute_url }}">Back</a>
+                    <button type="submit" class="btn btn-info">Add Comment</button>
+                </form>            
+            </div>
+            <div class="modal-footer">
+            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+
 {% endblock %}
 
 {% block sidebar %}

@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from taggit.models import Tag
 from django.db.models import Count
+from param.models import IntegerParams
 
 
 # function-based view of post list
@@ -22,7 +23,9 @@ def post_list(request, tag_slug=None):
         tag = get_object_or_404(Tag, slug=tag_slug)
         object_list = object_list.filter(tags__in=[tag])
 
-    paginator = Paginator(object_list, per_page=2)
+    BLOG_POSTS_PAGE_SIZE = get_object_or_404(IntegerParams, name='BLOG_POSTS_PAGE_SIZE').value
+
+    paginator = Paginator(object_list, per_page=BLOG_POSTS_PAGE_SIZE)
     page_number = request.GET.get('page_number')
     try:
         posts = paginator.get_page(page_number)
@@ -77,9 +80,7 @@ def post_detail(request, year, month, day, post):
         comment_form = CommentForm()
 
     # List of similar posts
-    post_tags_ids = post.tags.values_list('id', flat=True) # flat=True makes returning object a list of one values not [( x,y )]
-    similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
-    similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
+    similar_posts = post.get_similar_posts()
 
     return render(request, 'blog/post/detail.html', 
                     {
