@@ -1,3 +1,4 @@
+{% load blog_tags %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -31,11 +32,23 @@
     </div>
     <div id="sidebar">
         <h2>My Blog</h2>
-        <p>This is my blog.</p>
+        <p>This is my blog. I've written {% total_posts %} posts so far.</p>
+        <h4>Latest posts</h4>
+        {% show_latest_posts 3 %}
+        <hr>
+        <h4>Most commented posts</h4>
+        {% get_most_commented_posts 3 as most_commented_posts %}
+        <ul>
+            {% for post in most_commented_posts %}
+                <li>
+                    <a href="{{ post.get_absolute_url}}"> {{ post.title }} </a>
+                </li>
+            {% endfor %}
+        </ul>
         {% block sidebar %}
         {% endblock %}
     </div>
-
+    
     <!-- Bootstrap javascript links -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

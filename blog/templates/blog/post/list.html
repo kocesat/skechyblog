@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load blog_tags %}
 
 {% block title %}My Blog{% endblock %}
 
@@ -27,7 +28,10 @@
                     {% endfor %}
                 </h6>
                 <!-- POST BODY -->
-                <p class="card-text">{{ post.body|truncatewords:30|linebreaks }}</p>
+                <p class="card-text">
+                    <!-- {{ post.body|truncatewords:30|linebreaks }} -->
+                    {{ post.body|markdown|truncatewords_html:30 }}
+                </p>
                 <!-- POST FOOTER -->
                 {% with post.comments.count as total_comments %}
                     <p class="text-muted">

@@ -1,5 +1,7 @@
 {% extends 'blog/base.html' %}
 {% load crispy_forms_tags %}
+{% load blog_tags %}
+
 {% block title %} {{ post.title }} {% endblock %}
 
 {% block content %}
@@ -8,15 +10,13 @@
     <p class="date">
         Published {{post.publish}} by {{post.author}}
     </p>
-    {{post.body|linebreaks}}
+    <!-- {{post.body|linebreaks}} -->
+    {{ post.body|markdown }}
     <a href="{% url 'blog:post_list' %}" class="btn btn-outline-info"><i class="fas fa-arrow-left"></i></a>
     <a href="{% url 'blog:post_share' post.id %}" class="btn btn-outline-info"><i class="fas fa-share-alt"></i></a>
     <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#exampleModal">
         <i class="fas fa-comments"></i>
     </button>
-    <!-- TODO Add Like Property to the blog posts -->
-    <a href="#" class="btn btn-outline-info"><i class="fas fa-heart"></i></a>
-
     <hr>
 
     {% with comments.count as total_comments %}
